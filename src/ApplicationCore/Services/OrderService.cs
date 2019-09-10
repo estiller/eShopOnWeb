@@ -13,14 +13,17 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
         private readonly IAsyncRepository<Order> _orderRepository;
         private readonly IAsyncRepository<Basket> _basketRepository;
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
+        private readonly IQueueSender _queueSender;
 
         public OrderService(IAsyncRepository<Basket> basketRepository,
             IAsyncRepository<CatalogItem> itemRepository,
-            IAsyncRepository<Order> orderRepository)
+            IAsyncRepository<Order> orderRepository,
+            IQueueSender queueSender)
         {
             _orderRepository = orderRepository;
             _basketRepository = basketRepository;
             _itemRepository = itemRepository;
+            _queueSender = queueSender;
         }
 
         public async Task CreateOrderAsync(int basketId, Address shippingAddress)
@@ -38,6 +41,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             var order = new Order(basket.BuyerId, shippingAddress, "Pending", items);
 
             await _orderRepository.AddAsync(order);
+            await _queueSender.SendPendingOrderMessage(order.Id);
         }
     }
 }

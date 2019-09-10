@@ -99,6 +99,7 @@ namespace Microsoft.eShopWeb.Web
 
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IQueueSender>(sp => new QueueSender(Configuration.GetConnectionString("StorageAccount")));
 
             // Add memory cache services
             services.AddMemoryCache();
