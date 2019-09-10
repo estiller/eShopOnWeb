@@ -35,7 +35,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
                 var orderItem = new OrderItem(itemOrdered, item.UnitPrice, item.Quantity);
                 items.Add(orderItem);
             }
-            var order = new Order(basket.BuyerId, shippingAddress, items);
+            var order = new Order(basket.BuyerId, shippingAddress, "Pending", items);
 
             await _orderRepository.AddAsync(order);
         }

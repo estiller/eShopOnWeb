@@ -40,7 +40,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
                     }).ToList(),
                     OrderNumber = o.Id,
                     ShippingAddress = o.ShipToAddress,
-                    Status = "Pending",
+                    Status = o.Status,
                     Total = o.Total()
 
                 });
@@ -70,7 +70,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
                 }).ToList(),
                 OrderNumber = order.Id,
                 ShippingAddress = order.ShipToAddress,
-                Status = "Pending",
+                Status = order.Status,
                 Total = order.Total()
             };
             return View(viewModel);
